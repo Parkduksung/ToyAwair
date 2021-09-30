@@ -15,7 +15,7 @@ class AwairRemoteDataSourceImpl @Inject constructor(private val awairApi: AwairA
             return@withContext try {
                 Result.Success(awairApi.getEvents(nextPageToken = nextPageToken).execute().body()!!)
             } catch (e: Exception) {
-                Result.Error(e)
+                Result.Error(Exception("에러가 발생하였습니다."))
             }
         }
 }
