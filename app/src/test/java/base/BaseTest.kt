@@ -14,7 +14,7 @@ abstract class BaseTest {
 
 
     @Before
-    fun setup() {
+    open fun setup() {
         Dispatchers.setMain(TestCoroutineDispatcher())
     }
 
