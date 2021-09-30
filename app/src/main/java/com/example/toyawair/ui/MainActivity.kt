@@ -8,14 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.toyawair.R
 import com.example.toyawair.databinding.ActivityMainBinding
+import com.example.toyawair.ui.adapter.AwairAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     private val mainViewModel by viewModels<MainViewModel>()
 
-    private lateinit var binding: ActivityMainBinding
+    private val awairAdapter by lazy { AwairAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
         binding.lifecycleOwner = this@MainActivity
         setContentView(binding.root)
+
+        binding.rvAwair.adapter = awairAdapter
     }
 
     private fun initViewModel() {
@@ -36,11 +41,15 @@ class MainActivity : AppCompatActivity() {
 
             when (mainViewState) {
                 is MainViewModel.MainViewState.GetAwairEvents -> {
-
+                    awairAdapter.addAll(mainViewState.events)
                 }
 
                 is MainViewModel.MainViewState.Error -> {
-
+                    Toast.makeText(
+                        this@MainActivity,
+                        mainViewState.errorMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
