@@ -2,7 +2,7 @@ package com.example.toyawair.ui
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.toyawair.api.response.Event
+import com.example.toyawair.api.response.AwairEvent
 import com.example.toyawair.data.repo.AwairRepository
 import com.example.toyawair.utils.MutableSingleLiveData
 import com.example.toyawair.utils.Result
@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
 
 
     sealed class MainViewState {
-        data class GetAwairEvents(val events: List<Event>) : MainViewState()
+        data class GetAwairEvents(val events: List<AwairEvent>) : MainViewState()
         data class Error(val errorMessage: String) : MainViewState()
     }
 }

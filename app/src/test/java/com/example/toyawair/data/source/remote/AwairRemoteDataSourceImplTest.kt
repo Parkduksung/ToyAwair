@@ -3,7 +3,7 @@ package com.example.toyawair.data.source.remote
 import base.BaseTest
 import com.example.toyawair.api.AwairApi
 import com.example.toyawair.api.response.AwairResponse
-import com.example.toyawair.api.response.Event
+import com.example.toyawair.api.response.AwairEvent
 import com.example.toyawair.utils.Result
 import kotlinx.coroutines.runBlocking
 import okhttp3.Request
@@ -107,17 +107,17 @@ class AwairRemoteDataSourceImplTest : BaseTest() {
         val mockAwairResponse =
             AwairResponse(
                 events = listOf(
-                    Event(
+                    AwairEvent(
                         end = "November 8, 2017 1:30 PM",
                         start = "November 8, 2017 12:30 PM",
                         title = "Nap Break"
                     ),
-                    Event(
+                    AwairEvent(
                         end = "November 3, 2017 10:00 PM",
                         start = "November 3, 2017 6:00 PM",
                         title = "Football Game"
                     ),
-                    Event(
+                    AwairEvent(
                         end = "November 6, 2017 10:00 PM",
                         start = "November 6, 2017 5:00 PM",
                         title = "Evening Cookout with Friends"
