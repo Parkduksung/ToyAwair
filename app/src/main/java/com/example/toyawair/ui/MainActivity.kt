@@ -1,11 +1,12 @@
 package com.example.toyawair.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.toyawair.R
 import com.example.toyawair.databinding.ActivityMainBinding
 import com.example.toyawair.ui.adapter.AwairAdapter
@@ -31,7 +32,10 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this@MainActivity
         setContentView(binding.root)
 
-        binding.rvAwair.adapter = awairAdapter
+        with(binding.rvAwair) {
+            adapter = awairAdapter
+            addOnScrollListener(awairRecyclerViewScrollListener)
+        }
     }
 
     private fun initViewModel() {
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             when (mainViewState) {
                 is MainViewModel.MainViewState.GetAwairEvents -> {
                     awairAdapter.addAll(mainViewState.events)
+                    binding.rvAwair.scrollToPosition(INIT_SCROLL_POSITION)
                 }
 
                 is MainViewModel.MainViewState.Error -> {
@@ -53,6 +58,26 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private val awairRecyclerViewScrollListener = object : RecyclerView.OnScrollListener() {
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val lastVisible =
+                (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+
+            val totalItemCount = awairAdapter.itemCount
+
+            if (lastVisible >= totalItemCount - 1) {
+                mainViewModel.getEvents()
+            }
+        }
+    }
+
+    companion object {
+        private const val INIT_SCROLL_POSITION = 0
     }
 
 }
