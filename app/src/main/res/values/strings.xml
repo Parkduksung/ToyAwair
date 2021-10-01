@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ToyAwair</string>
-    <string name="error_message">%1$s \n 잠시후 다시 스크롤 해주세요.</string>
+    <string name="error_message_init">%1$s \n 새로고침을 눌러주세요.</string>
+    <string name="error_message_scroll">%1$s \n 잠시후 다시 스크롤 해주세요.</string>
 </resources>

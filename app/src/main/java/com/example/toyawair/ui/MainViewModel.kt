@@ -40,9 +40,19 @@ class MainViewModel @Inject constructor(
                 }
 
                 is Result.Error -> {
-                    _mainViewStataLiveData.setValue(MainViewState.Error(result.exception.message.orEmpty()))
-                }
+                    val errorType: ErrorType = if (nextTokenPageQueue.size == 1) {
+                        ErrorType.INIT
+                    } else {
+                        ErrorType.SCROLL
+                    }
 
+                    _mainViewStataLiveData.setValue(
+                        MainViewState.Error(
+                            errorType,
+                            result.exception.message.orEmpty()
+                        )
+                    )
+                }
             }
         }
     }
@@ -56,6 +66,10 @@ class MainViewModel @Inject constructor(
 
     sealed class MainViewState {
         data class GetAwairEvents(val events: List<AwairEvent>) : MainViewState()
-        data class Error(val errorMessage: String) : MainViewState()
+        data class Error(val errorType: ErrorType, val errorMessage: String) : MainViewState()
     }
+}
+
+enum class ErrorType {
+    INIT, SCROLL
 }

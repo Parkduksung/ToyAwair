@@ -1,6 +1,7 @@
 package com.example.toyawair.ui
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyawair.R
 import com.example.toyawair.databinding.ActivityMainBinding
+import com.example.toyawair.ext.setupActionBar
 import com.example.toyawair.ui.adapter.AwairAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +38,11 @@ class MainActivity : AppCompatActivity() {
             adapter = awairAdapter
             addOnScrollListener(awairRecyclerViewScrollListener)
         }
+
+        setupActionBar(R.id.toolbar) {
+            setHomeAsUpIndicator(R.drawable.ic_refresh)
+            setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     private fun initViewModel() {
@@ -50,11 +57,29 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 is MainViewModel.MainViewState.Error -> {
-                    Toast.makeText(
-                        this@MainActivity,
-                        getString(R.string.error_message, mainViewState.errorMessage),
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+                    when (mainViewState.errorType) {
+                        ErrorType.INIT -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(
+                                    R.string.error_message_init,
+                                    mainViewState.errorMessage
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        ErrorType.SCROLL -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(
+                                    R.string.error_message_scroll,
+                                    mainViewState.errorMessage
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }
             }
         }
@@ -74,6 +99,14 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.getEvents()
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            mainViewModel.getEvents()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {
