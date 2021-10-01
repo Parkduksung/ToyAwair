@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyawair.api.response.AwairEvent
 import com.example.toyawair.ui.viewholder.AwairViewHolder
+import com.example.toyawair.ext.toLocalDateTime
 
 class AwairAdapter : RecyclerView.Adapter<AwairViewHolder>() {
 
@@ -21,6 +22,7 @@ class AwairAdapter : RecyclerView.Adapter<AwairViewHolder>() {
 
     fun addAll(list: List<AwairEvent>) {
         awairEventList.addAll(list)
+        awairEventList.sortBy { it.start.toLocalDateTime() }
         notifyDataSetChanged()
     }
 
