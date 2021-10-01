@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 is MainViewModel.MainViewState.Error -> {
                     Toast.makeText(
                         this@MainActivity,
-                        mainViewState.errorMessage,
+                        getString(R.string.error_message, mainViewState.errorMessage),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

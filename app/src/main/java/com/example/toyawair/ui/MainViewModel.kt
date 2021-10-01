@@ -1,7 +1,6 @@
 package com.example.toyawair.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.toyawair.api.response.AwairEvent
 import com.example.toyawair.data.repo.AwairRepository
@@ -36,7 +35,7 @@ class MainViewModel @Inject constructor(
             when (val result = awairRepository.getEvent(nextTokenPageQueue.last())) {
 
                 is Result.Success -> {
-                    _mainViewStataLiveData.setValue(MainViewState.GetAwairEvents(result.data.events))
+                    _mainViewStataLiveData.setValue(MainViewState.GetAwairEvents(result.data.events.filter { it.title != EMPTY }))
                     nextTokenPageQueue.add(result.data.next_page_token)
                 }
 
@@ -52,7 +51,7 @@ class MainViewModel @Inject constructor(
     companion object {
 
         private const val INIT_TOKEN = ""
-
+        private const val EMPTY = ""
     }
 
     sealed class MainViewState {

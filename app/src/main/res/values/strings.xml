@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ToyAwair</string>
+    <string name="error_message">%1$s \n 잠시후 다시 스크롤 해주세요.</string>
 </resources>
